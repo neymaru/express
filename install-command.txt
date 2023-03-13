@@ -1,0 +1,2 @@
+npm i -S express cors ejs
+npm install -D eslint eslint-config-airbnb-base eslint-plugin-import
