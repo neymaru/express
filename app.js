@@ -18,10 +18,12 @@ app.use(express.urlencoded({ extended: false }));
 const mainRouter = require('./routes');
 const userRouter = require('./routes/users');
 const boardRouter = require('./routes/board');
+const dbRouter = require('./routes/db');
 
 app.use('/', mainRouter); // '/' 이 주소로 요청이 들어오면 app.js 가 다루지 않고 mainRouter에게 하청을 맡김
 app.use('/users', userRouter); // 서버야 /users 라는 url로 요청이 들어오면 userRouter 에게 담당시켜 라고 담당자 지정
 app.use('/board', boardRouter);
+app.use('/db', dbRouter);
 
 // --------------- 미들웨어 ---------------
 
