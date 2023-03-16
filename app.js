@@ -1,6 +1,7 @@
 // ----------------- 패키지 -----------------
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 // --------------- 중요 정보 -----------------
 const app = express(); // express 서버를 실행해서 app 변수에 넣어주기
@@ -13,17 +14,22 @@ app.use(express.static('public')); // app.use 를 사용하여 static 폴더 사
 // bodyparser 를 위한 코드 2줄
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser()); // 나 이제 cookie-parser 쓴다
 
 // --------------- 라우터 ---------------
 const mainRouter = require('./routes');
 const userRouter = require('./routes/users');
 const boardRouter = require('./routes/board');
 const dbRouter = require('./routes/db');
+const dbBoardRouter = require('./routes/dbBoard');
+const cookieRouter = require('./routes/cookie');
 
 app.use('/', mainRouter); // '/' 이 주소로 요청이 들어오면 app.js 가 다루지 않고 mainRouter에게 하청을 맡김
 app.use('/users', userRouter); // 서버야 /users 라는 url로 요청이 들어오면 userRouter 에게 담당시켜 라고 담당자 지정
 app.use('/board', boardRouter);
 app.use('/db', dbRouter);
+app.use('/dbBoard', dbBoardRouter);
+app.use('/cookie', cookieRouter);
 
 // --------------- 미들웨어 ---------------
 
