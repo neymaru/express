@@ -2,6 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
 
 // --------------- 중요 정보 -----------------
 const app = express(); // express 서버를 실행해서 app 변수에 넣어주기
@@ -15,6 +16,16 @@ app.use(express.static('public')); // app.use 를 사용하여 static 폴더 사
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser()); // 나 이제 cookie-parser 쓴다
+app.use(
+  session({
+    secret: 'tetz', // 세션을 발급할 때 사용되는 키 값
+    resave: false, // 모든 request 마다 기존에 있던 session에 아무런 변경사항이 없어도 session 을 다시 저장하는 옵션
+    saveUninitialized: true, // 세션에 저장할 내역이 없더라도 처음부터 세션을 생성할지 설정
+    cookie: {
+      maxAge: 1000 * 60 * 69, // 쿠키의 생명 기간이고 단위는 ms
+    },
+  }),
+);
 
 // --------------- 라우터 ---------------
 const mainRouter = require('./routes');
@@ -23,6 +34,7 @@ const boardRouter = require('./routes/board');
 const dbRouter = require('./routes/db');
 const dbBoardRouter = require('./routes/dbBoard');
 const cookieRouter = require('./routes/cookie');
+const registerRouter = require('./routes/register');
 
 app.use('/', mainRouter); // '/' 이 주소로 요청이 들어오면 app.js 가 다루지 않고 mainRouter에게 하청을 맡김
 app.use('/users', userRouter); // 서버야 /users 라는 url로 요청이 들어오면 userRouter 에게 담당시켜 라고 담당자 지정
@@ -30,6 +42,7 @@ app.use('/board', boardRouter);
 app.use('/db', dbRouter);
 app.use('/dbBoard', dbBoardRouter);
 app.use('/cookie', cookieRouter);
+app.use('/register', registerRouter);
 
 // --------------- 미들웨어 ---------------
 

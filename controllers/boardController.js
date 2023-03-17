@@ -2,14 +2,12 @@ const connection = require('./dbConnect');
 
 const boardDB = {
   // 모든 게시글 가져오기
-
   getAllArticles: (cb) => {
     // 데이터를 갖기 위한 콜백 함수를 갖고 있음
-
     connection.query('SELECT * from mydb1.board', (err, data) => {
       // 데이터베이스 커넥션으로부터 쿼리 전달
       if (err) throw err; // 에러 있으면 던지기
-      console.log(data); // 데이터 잘 들어왔는지 찍어보기
+      // console.log(data); // 데이터 잘 들어왔는지 찍어보기
       cb(data); // 콜백함수의 인자로써 받아온 데이터를 날려줌
     });
   },
@@ -45,7 +43,7 @@ const boardDB = {
     );
   },
 
-  // 삭제하기
+  // 특정 ID를 가지는 게시글 삭제하기
   deleteArticle: (id, cb) => {
     connection.query(
       `DELETE FROM mydb1.board WHERE ID_PK = ${id};`,
