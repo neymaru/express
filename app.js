@@ -35,6 +35,7 @@ const dbRouter = require('./routes/db');
 const dbBoardRouter = require('./routes/dbBoard');
 const cookieRouter = require('./routes/cookie');
 const registerRouter = require('./routes/register');
+const loginRouter = require('./routes/login');
 
 app.use('/', mainRouter); // '/' 이 주소로 요청이 들어오면 app.js 가 다루지 않고 mainRouter에게 하청을 맡김
 app.use('/users', userRouter); // 서버야 /users 라는 url로 요청이 들어오면 userRouter 에게 담당시켜 라고 담당자 지정
@@ -43,6 +44,7 @@ app.use('/db', dbRouter);
 app.use('/dbBoard', dbBoardRouter);
 app.use('/cookie', cookieRouter);
 app.use('/register', registerRouter);
+app.use('/login', loginRouter);
 
 // --------------- 미들웨어 ---------------
 
