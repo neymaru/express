@@ -5,12 +5,28 @@ const boardDB = require('../controllers/boardController');
 
 const router = express.Router();
 
+// 로그인 확인용 미들웨어
+function isLogin(req, res, next) {
+  if (req.session.login) {
+    next();
+  } else {
+    res.status(400);
+    res.send(
+      '로그인 필요한 서비스 입니다!<br><a href="/login">로그인 페이지로 이동</a>',
+    );
+  }
+}
+
 // 게시판 페이지 호출
-router.get('/', (req, res) => {
+router.get('/', isLogin, (req, res) => {
+  // 가운데 끼어있는 미들웨어를 실행하고, 걔가 next를 반환하면 콜백까지 이어지는 구조
+  // isLogin 은 req.session 로그인인지 체크, 있으면 next (콜백 함수 실행), 없으면 자기가 로그인 해달라는 send 때림
+
   boardDB.getAllArticles((data) => {
     const ARTICLE = data;
     const articleCounts = ARTICLE.length;
-    res.render('db_board', { ARTICLE, articleCounts });
+    const { userId } = req.session;
+    res.render('db_board', { ARTICLE, articleCounts, userId });
   });
 });
 
