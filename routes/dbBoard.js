@@ -7,7 +7,8 @@ const router = express.Router();
 
 // 로그인 확인용 미들웨어
 function isLogin(req, res, next) {
-  if (req.session.login) {
+  if (req.session.login || req.signedCookies.user) {
+    // 암호화된 정보는 req.signedCookies 로 접근 (쿠키가 없으면 undefined)
     next();
   } else {
     res.status(400);
@@ -33,15 +34,22 @@ router.get('/', isLogin, (req, res) => {
 // ------------- 미들웨어 ---------------
 
 // 글쓰기 페이지 호출
-router.get('/write', (req, res) => {
+router.get('/write', isLogin, (req, res) => {
   res.render('db_board_write');
 });
 
 // 데이터베이스에 글쓰기
-router.post('/write', (req, res) => {
+router.post('/write', isLogin, (req, res) => {
+  // USERID --> req.session.userId
   // console.log(req.body); // 파라미터가 아닌 form 으로 넘기니 req.body로 받아야 함
   if (req.body.title && req.body.content) {
-    boardDB.writeArticle(req.body, (data) => {
+    const newArticle = {
+      userId: req.session.userId,
+      title: req.body.title,
+      content: req.body.content,
+    };
+    boardDB.writeArticle(newArticle, (data) => {
+      // req.body 가 아니라 new Article을 보낸다
       console.log(data);
       if (data.affectedRows >= 1) {
         res.redirect('/dbBoard');
@@ -60,7 +68,7 @@ router.post('/write', (req, res) => {
 });
 
 // 글 수정 모드로 이동
-router.get('/modify/:id', (req, res) => {
+router.get('/modify/:id', isLogin, (req, res) => {
   boardDB.getArticle(req.params.id, (data) => {
     if (data.length > 0) {
       res.render('db_board_modify', { selectedArticle: data[0] }); // 찾은 값을 selectedAr
@@ -73,7 +81,7 @@ router.get('/modify/:id', (req, res) => {
 });
 
 // 글 수정하기
-router.post('/modify/:id', (req, res) => {
+router.post('/modify/:id', isLogin, (req, res) => {
   if (req.body.title && req.body.content) {
     boardDB.modifyArticle(req.params.id, req.body, (data) => {
       if (data.affectedRows >= 1) {
@@ -93,7 +101,7 @@ router.post('/modify/:id', (req, res) => {
 });
 
 // 글 삭제하기
-router.delete('/delete/:id', (req, res) => {
+router.delete('/delete/:id', isLogin, (req, res) => {
   boardDB.deleteArticle(req.params.id, (data) => {
     if (data.affectedRows >= 1) {
       res.status(200).send('글 삭제 성공'); // status 코드 찍어주고 send도 동시에

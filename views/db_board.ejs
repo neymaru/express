@@ -128,6 +128,9 @@
           <% if (articleCounts > 0) { %>
           <% for(let i=0; i < articleCounts; i++) { %>
           <li>
+            <div class="author">
+              작성자 : <%= ARTICLE[i].USERID %>
+            </div>
             <div class="title">
               <%= ARTICLE[i].TITLE %>
             </div>
@@ -135,8 +138,10 @@
               <%= ARTICLE[i].CONTENT %>
             </div>
             <div class="foot">
+              <% if (ARTICLE[i].USERID === userId) { %>
               <a class="btn orange" href="/dbBoard/modify/<%= ARTICLE[i].ID_PK %>">수정</a>
               <a class="btn blue" href="#" onclick="deleteArticle('<%= ARTICLE[i].ID_PK %>')">삭제</a>
+              <% } %>
             </div>
           </li>
           <% } %>

@@ -15,7 +15,7 @@ const boardDB = {
   writeArticle: (newArticle, cb) => {
     // 서버에 접속한 다음에 쿼리 날려주기
     connection.query(
-      `INSERT INTO mydb1.board (TITLE, CONTENT) values ('${newArticle.title}', '${newArticle.content}');`,
+      `INSERT INTO mydb1.board (USERID, TITLE, CONTENT) values ('${newArticle.userId}', '${newArticle.title}', '${newArticle.content}');`,
       (err, data) => {
         if (err) throw err;
         cb(data);

@@ -3,10 +3,11 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+require('dotenv').config(); // 바로 불러서 실행시키는 방식. 이 서버한테 env 방식을 적용 시키겠다
 
 // --------------- 중요 정보 -----------------
 const app = express(); // express 서버를 실행해서 app 변수에 넣어주기
-const PORT = 4000; // 포트 번호 설정. 3000번 대 이상 수 중 아무 숫자나 포트 번호로 설정 (3000번은 안쓰는 게 좋음)
+const { PORT } = process.env; // 포트 번호 설정. 3000번 대 이상 수 중 아무 숫자나 포트 번호로 설정 (3000번은 안쓰는 게 좋음)
 
 // --------------- 서버 설정 ---------------
 app.use(cors()); // cors 패키지를 써라
@@ -15,15 +16,12 @@ app.use(express.static('public')); // app.use 를 사용하여 static 폴더 사
 // bodyparser 를 위한 코드 2줄
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser()); // 나 이제 cookie-parser 쓴다
+app.use(cookieParser('tetz')); // 나 이제 cookie-parser 쓴다. 문자열 값 아무거나 넣어주면 된다.
 app.use(
   session({
     secret: 'tetz', // 세션을 발급할 때 사용되는 키 값
     resave: false, // 모든 request 마다 기존에 있던 session에 아무런 변경사항이 없어도 session 을 다시 저장하는 옵션
     saveUninitialized: true, // 세션에 저장할 내역이 없더라도 처음부터 세션을 생성할지 설정
-    cookie: {
-      maxAge: 1000 * 60 * 69, // 쿠키의 생명 기간이고 단위는 ms
-    },
   }),
 );
 
