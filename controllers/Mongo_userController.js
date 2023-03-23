@@ -1,5 +1,4 @@
-require('./mongooseConnect');
-const User = require('../models/user');
+const mongoClient = require('./mongoConnect'); // mongoConnect 파일 연결
 
 // 리팩토링 된 코드
 const UNEXPECTED_MSG =
@@ -17,11 +16,14 @@ const LOGIN_WRONG_PASSWORD_MSG =
 
 const registerUser = async (req, res) => {
   try {
-    // const duplicatedUser = await user.findOne({ id: req.body.id }); // form이 가지고 있는 req.body.id 를 id 값에 넣어줌
-    // if (duplicatedUser) return res.status(400).send(DUPLICATED_MSG); // 400번대는 사용자 잘못
+    const client = await mongoClient.connect();
+    const user = client.db('kdt5').collection('user');
+
+    const duplicatedUser = await user.findOne({ id: req.body.id }); // form이 가지고 있는 req.body.id 를 id 값에 넣어줌
+    if (duplicatedUser) return res.status(400).send(DUPLICATED_MSG); // 400번대는 사용자 잘못
 
     // 중복된 아이디가 없다면 회원가입 시키기
-    await User.create(req.body);
+    await user.insertOne(req.body);
     res.status(200).send(SUSSCESS_MSG);
   } catch (err) {
     console.error(err); // 터미널에 에러 띄우기
@@ -31,7 +33,11 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
-    const findUser = await User.findOne({ id: req.body.id });
+    const client = await mongoClient.connect();
+    const user = client.db('kdt5').collection('user');
+
+    const findUser = await user.findOne({ id: req.body.id });
+
     if (!findUser) return res.status(400).send(LOGIN_NOT_REGISTERED_MSG);
 
     if (findUser.password !== req.body.password)

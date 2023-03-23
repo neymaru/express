@@ -1,8 +1,8 @@
 // ----------------- 패키지 -----------------
 const express = require('express');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
+const cors = require('cors'); // HTTP 요청에 대해 CORS(Cross-Origin Resource Sharing)를 활성화하는 미들웨어
+const cookieParser = require('cookie-parser'); // 들어오는 HTTP 요청에서 쿠키를 구문 분석하기 위한 미들웨어
+const session = require('express-session'); // Express 애플리케이션에서 사용자 세션을 처리하기 위한 미들웨어
 require('dotenv').config(); // 바로 불러서 실행시키는 방식. 이 서버한테 env 방식을 적용 시키겠다
 
 // --------------- 중요 정보 -----------------
@@ -13,6 +13,8 @@ const { PORT } = process.env; // 포트 번호 설정. 3000번 대 이상 수 �
 app.use(cors()); // cors 패키지를 써라
 app.set('view engine', 'ejs'); // 뷰엔진으로 ejs 를 쓸거다(ejs 가 설치되어 있어야 됨)
 app.use(express.static('public')); // app.use 를 사용하여 static 폴더 사용을 서버에 알려주기 (괄호 안은 지정할 폴더명)
+app.use('/uploads', express.static('uploads'));
+
 // bodyparser 를 위한 코드 2줄
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -51,7 +53,7 @@ app.get('/', (req, res) => {
   res.send('어서와 Express는 처음이지?');
 });
 
-// --------------- 에러 처리 ---------------
+// --------------- 사용자 지정 오류 처리 미들웨어 ---------------
 // 인자 4개를 입력해야만 err 를 받을 수 있다
 app.use((err, req, res, next) => {
   console.log(err.stack);
