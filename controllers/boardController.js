@@ -38,7 +38,7 @@ const writeArticle = async (req, res) => {
       USERID: req.session.userId,
       TITLE: req.body.title,
       CONTENT: req.body.content,
-      IMAGE: req.file ? req.file.filename : null,
+      IMAGE: req.file ? req.file.filename : null, // req.file 이 존재할 때, file 불러오기
     };
     await board.insertOne(newArticle); // 문제 없이 작동하면 await 풀리면서 다음 줄 작동
     res.redirect('/dbBoard');
