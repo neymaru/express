@@ -7,42 +7,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>메인 페이지</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
   <style>
-    .container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Passion+One&display=swap');
+    /* font-family: 'Passion One', cursive; */
 
     .logo {
-      display: block;
-      background-color: salmon;
-      margin-top: 100px;
+      margin-top: 10vh;
       margin-bottom: auto;
-      font-size: 60px;
+      font-size: 80px;
+      text-align: center;
+      font-family: Passion One;
+      color: rgb(21, 77, 122);
     }
 
     .buttons {
-      background-color: skyblue;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 20px;
+      margin-top: 20vh;
+      text-align: center;
     }
 
     .buttons button {
-      margin: 5px;
+      margin: 10px;
       padding: 10px 20px;
-      background-color: #333;
-      color: #fff;
+
       border: none;
-      border-radius: 5px;
-      font-size: 16px;
+      border-radius: 10px;
       cursor: pointer;
+    }
+
+    .btn-board {
+      width: 400px;
+      height: 80px;
+      font-size: 30px;
+      font-weight: bold;
+      background-color: #4f90da;
+      color: #fff;
+    }
+
+    .user button {
+      width: 187px;
+      height: 60px;
+      font-size: 22px;
+      font-weight: bold;
+      background-color: #a5a5a5;
+      color: #fff;
+    }
+
+    .btn-board:hover,
+    .user button:hover {
+      background-color: rgb(252, 107, 91);
+      /* color: rgb(41, 41, 41); */
+      transition: all 0.3s;
     }
   </style>
 </head>
@@ -57,13 +71,14 @@
       <h2><a href="/dbBoard">게시판 서비스</a></h2>
     </div>
   </div> -->
-  <div class="container">
-    <div class="logo">Ney Express Service</div>
-    <div class="buttons">
-      <button>Button 1</button>
-      <button>Button 2</button>
-      <button>Button 3</button>
+  <div class="logo">NEY EXPRESS SERVICE</div>
+  <div class="buttons">
+    <button class="btn-board" onclick="location.href='/dbBoard'">게시판</button>
+    <div class="user">
+      <button onclick="location.href='/login'">로그인</button>
+      <button onclick="location.href='/register'">회원가입</button>
     </div>
+  </div>
   </div>
 </body>
 <script>
